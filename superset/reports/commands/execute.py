@@ -340,7 +340,7 @@ class BaseReportState:
             ):
                 csv_data = self._get_csv_data()
                 if not csv_data:
-                    error_text = "Unexpected missing csv file"                 
+                    error_text = "Unexpected missing csv file"
             elif (
                 self._report_schedule.chart
                 and self._report_schedule.report_format == ReportDataFormat.XLSX
@@ -348,10 +348,10 @@ class BaseReportState:
                 csv_data = self._get_csv_data()
                 if not csv_data:
                     error_text = "Unexpected missing csv data for xlsx"
-                else: 
+                else:
                     df = pd.read_csv(BytesIO(csv_data))
                     bio = BytesIO()
-                    writer = pd.ExcelWriter(bio, engine='openpyxl')
+                    writer = pd.ExcelWriter(bio, engine="openpyxl", index=False)
                     df.to_excel(writer)
                     writer.save()
                     xlsx_data = bio.getvalue()
