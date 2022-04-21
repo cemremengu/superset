@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import React, {
+ import React, {
   useState,
   useEffect,
   useCallback,
@@ -143,6 +143,7 @@ const NOTIFICATION_FORMATS = {
   TEXT: 'TEXT',
   PNG: 'PNG',
   CSV: 'CSV',
+  XLSX: 'XLSX',
 };
 
 const defaultErrorMsg = t(
@@ -312,6 +313,9 @@ const ReportModal: FunctionComponent<ReportProps> = ({
           </StyledRadio>
           <StyledRadio value={NOTIFICATION_FORMATS.CSV}>
             {t('Formatted CSV attached in email')}
+          </StyledRadio>
+          <StyledRadio value={NOTIFICATION_FORMATS.XLSX}>
+            {t('Formatted XLSX attached in email')}
           </StyledRadio>
         </StyledRadioGroup>
       </div>

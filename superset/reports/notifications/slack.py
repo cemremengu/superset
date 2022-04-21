@@ -142,6 +142,8 @@ Error: %(text)s
     def _get_inline_files(self) -> Sequence[Union[str, IOBase, bytes]]:
         if self._content.csv:
             return [self._content.csv]
+        if self._content.xlsx:
+            return [self._content.xlsx]
         if self._content.screenshots:
             return self._content.screenshots
         return []
@@ -152,7 +154,13 @@ Error: %(text)s
         title = self._content.name
         channel = self._get_channel()
         body = self._get_body()
-        file_type = "csv" if self._content.csv else "png"
+        file_type = "" 
+        if self._content.csv:
+            file_type = "csv"
+        elif self._content.xlsx:
+            file_type = "xlsx"
+        else: 
+            file_type = "png"
         try:
             token = app.config["SLACK_API_TOKEN"]
             if callable(token):

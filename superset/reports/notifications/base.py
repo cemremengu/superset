@@ -27,6 +27,7 @@ from superset.models.reports import ReportRecipients, ReportRecipientType
 class NotificationContent:
     name: str
     csv: Optional[bytes] = None  # bytes for csv file
+    xlsx: Optional[bytes] = None  # bytes for xlsx file
     screenshots: Optional[List[bytes]] = None  # bytes for a list of screenshots
     text: Optional[str] = None
     description: Optional[str] = ""

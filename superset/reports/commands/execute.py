@@ -17,10 +17,12 @@
 import json
 import logging
 from datetime import datetime, timedelta
+from io import BytesIO
 from typing import Any, List, Optional
 from uuid import UUID
 
 import pandas as pd
+
 from celery.exceptions import SoftTimeLimitExceeded
 from flask_appbuilder.security.sqla.models import User
 from sqlalchemy.orm import Session
@@ -319,6 +321,7 @@ class BaseReportState:
         :raises: ReportScheduleScreenshotFailedError
         """
         csv_data = None
+        xlsx_data = None
         embedded_data = None
         error_text = None
         screenshot_data = []
@@ -333,11 +336,26 @@ class BaseReportState:
                     error_text = "Unexpected missing screenshot"
             elif (
                 self._report_schedule.chart
-                and self._report_schedule.report_format == ReportDataFormat.DATA
+                and self._report_schedule.report_format == ReportDataFormat.CSV
             ):
                 csv_data = self._get_csv_data()
                 if not csv_data:
-                    error_text = "Unexpected missing csv file"
+                    error_text = "Unexpected missing csv file"                 
+            elif (
+                self._report_schedule.chart
+                and self._report_schedule.report_format == ReportDataFormat.XLSX
+            ):
+                csv_data = self._get_csv_data()
+                if not csv_data:
+                    error_text = "Unexpected missing csv data for xlsx"
+                else: 
+                    df = pd.read_csv(BytesIO(csv_data))
+                    bio = BytesIO()
+                    writer = pd.ExcelWriter(bio, engine='openpyxl')
+                    df.to_excel(writer)
+                    writer.save()
+                    xlsx_data = bio.getvalue()
+
             if error_text:
                 return NotificationContent(
                     name=self._report_schedule.name, text=error_text
@@ -365,6 +383,7 @@ class BaseReportState:
             screenshots=screenshot_data,
             description=self._report_schedule.description,
             csv=csv_data,
+            xlsx=xlsx_data,
             embedded_data=embedded_data,
         )
 
