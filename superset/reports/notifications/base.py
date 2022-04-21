@@ -26,8 +26,8 @@ from superset.models.reports import ReportRecipients, ReportRecipientType
 @dataclass
 class NotificationContent:
     name: str
-    csv: Optional[bytes] = None  # bytes for csv file
-    xlsx: Optional[bytes] = None  # bytes for xlsx file
+    data: Optional[bytes] = None  # bytes for data attachment
+    data_format: Optional[str] = None  # data attachment format (csv, xlsx, etc)
     screenshots: Optional[List[bytes]] = None  # bytes for a list of screenshots
     text: Optional[str] = None
     description: Optional[str] = ""

@@ -320,8 +320,7 @@ class BaseReportState:
 
         :raises: ReportScheduleScreenshotFailedError
         """
-        csv_data = None
-        xlsx_data = None
+        data = None
         embedded_data = None
         error_text = None
         screenshot_data = []
@@ -338,8 +337,8 @@ class BaseReportState:
                 self._report_schedule.chart
                 and self._report_schedule.report_format == ReportDataFormat.CSV
             ):
-                csv_data = self._get_csv_data()
-                if not csv_data:
+                data = self._get_csv_data()
+                if not data:
                     error_text = "Unexpected missing csv file"
             elif (
                 self._report_schedule.chart
@@ -354,8 +353,7 @@ class BaseReportState:
                     writer = pd.ExcelWriter(bio, engine="openpyxl", index=False)
                     df.to_excel(writer)
                     writer.save()
-                    xlsx_data = bio.getvalue()
-
+                    data = bio.getvalue()
             if error_text:
                 return NotificationContent(
                     name=self._report_schedule.name, text=error_text
@@ -382,8 +380,8 @@ class BaseReportState:
             url=url,
             screenshots=screenshot_data,
             description=self._report_schedule.description,
-            csv=csv_data,
-            xlsx=xlsx_data,
+            data=data,
+            data_format=self._report_schedule.report_format,
             embedded_data=embedded_data,
         )
 
