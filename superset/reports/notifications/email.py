@@ -139,8 +139,8 @@ class EmailNotification(BaseNotification):  # pylint: disable=too-few-public-met
             attachment = {
                 __(
                     "%(name)s.%(format)s",
+                    name=self._content.name,
                     format=self._content.data_format.lower(),
-                    name=self._content.data,
                 ): self._content.data
             }
         return EmailContent(body=body, images=images, data=attachment)
