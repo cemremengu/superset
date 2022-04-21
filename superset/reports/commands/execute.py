@@ -350,9 +350,8 @@ class BaseReportState:
                 else:
                     df = pd.read_csv(BytesIO(csv_data))
                     bio = BytesIO()
-                    writer = pd.ExcelWriter(bio, engine="openpyxl")
-                    df.to_excel(writer, index=False)
-                    writer.save()
+                    with pd.ExcelWriter(bio, engine="openpyxl") as writer:
+                        df.to_excel(writer, index=False)
                     data = bio.getvalue()
             if error_text:
                 return NotificationContent(
