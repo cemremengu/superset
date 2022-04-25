@@ -135,7 +135,7 @@ class EmailNotification(BaseNotification):  # pylint: disable=too-few-public-met
             """
         )
 
-        if self._content.data:
+        if self._content.data and self._content.data_format:
             attachment = {
                 __(
                     "%(name)s.%(format)s",

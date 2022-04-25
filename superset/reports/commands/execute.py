@@ -22,7 +22,6 @@ from typing import Any, List, Optional
 from uuid import UUID
 
 import pandas as pd
-
 from celery.exceptions import SoftTimeLimitExceeded
 from flask_appbuilder.security.sqla.models import User
 from sqlalchemy.orm import Session
@@ -350,6 +349,7 @@ class BaseReportState:
                 else:
                     df = pd.read_csv(BytesIO(csv_data))
                     bio = BytesIO()
+                    # pylint: disable=abstract-class-instantiated
                     with pd.ExcelWriter(bio, engine="openpyxl") as writer:
                         df.to_excel(writer, index=False)
                     data = bio.getvalue()
@@ -669,9 +669,8 @@ class AsyncExecuteReportScheduleCommand(BaseCommand):
             except Exception as ex:
                 raise ReportScheduleUnexpectedError(str(ex)) from ex
 
-    def validate(  # pylint: disable=arguments-differ
-        self, session: Session = None
-    ) -> None:
+    # pylint: disable=arguments-differ
+    def validate(self, session: Session = None) -> None:
         # Validate/populate model exists
         self._model = ReportScheduleDAO.find_by_id(self._model_id, session=session)
         if not self._model:
