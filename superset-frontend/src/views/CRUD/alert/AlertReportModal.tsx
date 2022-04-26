@@ -1362,6 +1362,7 @@ const AlertReportModal: FunctionComponent<AlertReportModalProps> = ({
                   >
                     <StyledRadio value="PNG">{t('Send as PNG')}</StyledRadio>
                     <StyledRadio value="CSV">{t('Send as CSV')}</StyledRadio>
+                    <StyledRadio value="XLSX">{t('Send as XLSX')}</StyledRadio>
                     {TEXT_BASED_VISUALIZATION_TYPES.includes(chartVizType) && (
                       <StyledRadio value="TEXT">
                         {t('Send as text')}
