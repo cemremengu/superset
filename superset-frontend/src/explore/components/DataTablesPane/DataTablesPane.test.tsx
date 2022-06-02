@@ -26,6 +26,9 @@ import {
   screen,
   waitForElementToBeRemoved,
 } from 'spec/helpers/testing-library';
+import { DatasourceType } from '@superset-ui/core';
+import { exploreActions } from 'src/explore/actions/exploreActions';
+import { ChartStatus } from 'src/explore/types';
 import { DataTablesPane } from '.';
 
 const createProps = () => ({
@@ -55,13 +58,23 @@ const createProps = () => ({
     extra_form_data: {},
   },
   queryForce: false,
-  chartStatus: 'rendered',
+  chartStatus: 'rendered' as ChartStatus,
   onCollapseChange: jest.fn(),
   queriesResponse: [
     {
       colnames: [],
     },
   ],
+  datasource: {
+    id: 0,
+    name: '',
+    type: DatasourceType.Table,
+    columns: [],
+    metrics: [],
+    columnFormats: {},
+    verboseMap: {},
+  },
+  actions: exploreActions,
 });
 
 describe('DataTablesPane', () => {
@@ -138,7 +151,7 @@ describe('DataTablesPane', () => {
       <DataTablesPane
         {...{
           ...props,
-          chartStatus: 'success',
+          chartStatus: 'rendered',
           queriesResponse: [
             {
               colnames: ['__timestamp', 'genre'],
@@ -151,7 +164,7 @@ describe('DataTablesPane', () => {
         useRedux: true,
         initialState: {
           explore: {
-            timeFormattedColumns: {
+            originalFormattedTimeColumns: {
               '34__table': ['__timestamp'],
             },
           },
@@ -190,7 +203,7 @@ describe('DataTablesPane', () => {
       <DataTablesPane
         {...{
           ...props,
-          chartStatus: 'success',
+          chartStatus: 'rendered',
           queriesResponse: [
             {
               colnames: ['__timestamp', 'genre'],
@@ -203,7 +216,7 @@ describe('DataTablesPane', () => {
         useRedux: true,
         initialState: {
           explore: {
-            timeFormattedColumns: {
+            originalFormattedTimeColumns: {
               '34__table': ['__timestamp'],
             },
           },
