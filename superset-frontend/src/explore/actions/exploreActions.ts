@@ -17,13 +17,8 @@
  * under the License.
  */
 /* eslint camelcase: 0 */
-import { DatasourceMeta } from '@superset-ui/chart-controls';
-import {
-  t,
-  SupersetClient,
-  DatasourceType,
-  QueryFormData,
-} from '@superset-ui/core';
+import { Dataset } from '@superset-ui/chart-controls';
+import { t, SupersetClient, QueryFormData } from '@superset-ui/core';
 import { Dispatch } from 'redux';
 import {
   addDangerToast,
@@ -33,19 +28,16 @@ import { Slice } from 'src/types/Chart';
 
 const FAVESTAR_BASE_URL = '/superset/favstar/slice';
 
-export const SET_DATASOURCE_TYPE = 'SET_DATASOURCE_TYPE';
-export function setDatasourceType(datasourceType: DatasourceType) {
-  return { type: SET_DATASOURCE_TYPE, datasourceType };
-}
-
-export const SET_DATASOURCE = 'SET_DATASOURCE';
-export function setDatasource(datasource: DatasourceMeta) {
-  return { type: SET_DATASOURCE, datasource };
-}
-
-export const SET_DATASOURCES = 'SET_DATASOURCES';
-export function setDatasources(datasources: DatasourceMeta[]) {
-  return { type: SET_DATASOURCES, datasources };
+export const UPDATE_FORM_DATA_BY_DATASOURCE = 'UPDATE_FORM_DATA_BY_DATASOURCE';
+export function updateFormDataByDatasource(
+  prevDatasource: Dataset,
+  newDatasource: Dataset,
+) {
+  return {
+    type: UPDATE_FORM_DATA_BY_DATASOURCE,
+    prevDatasource,
+    newDatasource,
+  };
 }
 
 export const POST_DATASOURCE_STARTED = 'POST_DATASOURCE_STARTED';
@@ -140,32 +132,6 @@ export function sliceUpdated(slice: Slice) {
   return { type: SLICE_UPDATED, slice };
 }
 
-export const SET_ORIGINAL_FORMATTED_TIME_COLUMN =
-  'SET_ORIGINAL_FORMATTED_TIME_COLUMN';
-export function setOriginalFormattedTimeColumn(
-  datasourceId: string,
-  columnName: string,
-) {
-  return {
-    type: SET_ORIGINAL_FORMATTED_TIME_COLUMN,
-    datasourceId,
-    columnName,
-  };
-}
-
-export const UNSET_ORIGINAL_FORMATTED_TIME_COLUMN =
-  'UNSET_ORIGINAL_FORMATTED_TIME_COLUMN';
-export function unsetOriginalFormattedTimeColumn(
-  datasourceId: string,
-  columnIndex: number,
-) {
-  return {
-    type: UNSET_ORIGINAL_FORMATTED_TIME_COLUMN,
-    datasourceId,
-    columnIndex,
-  };
-}
-
 export const SET_FORCE_QUERY = 'SET_FORCE_QUERY';
 export function setForceQuery(force: boolean) {
   return {
@@ -176,9 +142,6 @@ export function setForceQuery(force: boolean) {
 
 export const exploreActions = {
   ...toastActions,
-  setDatasourceType,
-  setDatasource,
-  setDatasources,
   fetchDatasourcesStarted,
   fetchDatasourcesSucceeded,
   toggleFaveStar,
@@ -189,8 +152,6 @@ export const exploreActions = {
   updateChartTitle,
   createNewSlice,
   sliceUpdated,
-  setOriginalFormattedTimeColumn,
-  unsetOriginalFormattedTimeColumn,
   setForceQuery,
 };
 

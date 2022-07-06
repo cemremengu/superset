@@ -40,7 +40,7 @@ import {
   ControlPanelSectionConfig,
   ControlState,
   CustomControlItem,
-  DatasourceMeta,
+  Dataset,
   ExpandedControlItem,
   InfoTooltipWithTrigger,
   sections,
@@ -54,8 +54,7 @@ import Loading from 'src/components/Loading';
 import { usePrevious } from 'src/hooks/usePrevious';
 import { getSectionsToRender } from 'src/explore/controlUtils';
 import { ExploreActions } from 'src/explore/actions/exploreActions';
-import { ExplorePageState } from 'src/explore/reducers/getInitialState';
-import { ChartState } from 'src/explore/types';
+import { ChartState, ExplorePageState } from 'src/explore/types';
 import { Tooltip } from 'src/components/Tooltip';
 
 import { rgba } from 'emotion-rgba';
@@ -174,13 +173,13 @@ const isTimeSection = (section: ControlPanelSectionConfig): boolean =>
   (sections.legacyRegularTime.label === section.label ||
     sections.legacyTimeseriesTime.label === section.label);
 
-const hasTimeColumn = (datasource: DatasourceMeta): boolean =>
+const hasTimeColumn = (datasource: Dataset): boolean =>
   datasource?.columns?.some(c => c.is_dttm) ||
   datasource.type === DatasourceType.Druid;
 
 const sectionsToExpand = (
   sections: ControlPanelSectionConfig[],
-  datasource: DatasourceMeta,
+  datasource: Dataset,
 ): string[] =>
   // avoid expanding time section if datasource doesn't include time column
   sections.reduce(
@@ -193,7 +192,7 @@ const sectionsToExpand = (
 
 function getState(
   vizType: string,
-  datasource: DatasourceMeta,
+  datasource: Dataset,
   datasourceType: DatasourceType,
 ) {
   const querySections: ControlPanelSectionConfig[] = [];
@@ -381,7 +380,14 @@ export const ControlPanelsContainer = (props: ControlPanelsContainerProps) => {
     );
     const PanelHeader = () => (
       <span data-test="collapsible-control-panel-header">
-        <span>{label}</span>{' '}
+        <span
+          css={(theme: SupersetTheme) => css`
+            font-size: ${theme.typography.sizes.m}px;
+            line-height: 1.3;
+          `}
+        >
+          {label}
+        </span>{' '}
         {description && (
           // label is only used in tooltip id (should probably call this prop `id`)
           <InfoTooltipWithTrigger label={sectionId} tooltip={description} />
@@ -535,7 +541,6 @@ export const ControlPanelsContainer = (props: ControlPanelsContainerProps) => {
             defaultActiveKey={expandedQuerySections}
             expandIconPosition="right"
             ghost
-            key={`query-sections-${props.form_data.datasource}-${props.form_data.viz_type}`}
           >
             {showDatasourceAlert && <DatasourceAlert />}
             {querySections.map(renderControlPanelSection)}
@@ -547,7 +552,6 @@ export const ControlPanelsContainer = (props: ControlPanelsContainerProps) => {
               defaultActiveKey={expandedCustomizeSections}
               expandIconPosition="right"
               ghost
-              key={`customize-sections-${props.form_data.datasource}-${props.form_data.viz_type}`}
             >
               {customizeSections.map(renderControlPanelSection)}
             </Collapse>

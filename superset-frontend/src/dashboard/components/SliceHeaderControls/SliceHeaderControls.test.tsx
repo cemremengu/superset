@@ -48,7 +48,7 @@ const createProps = (viz_type = 'sunburst') => ({
   onExploreChart: jest.fn(),
   slice: {
     slice_id: 371,
-    slice_url: '/superset/explore/?form_data=%7B%22slice_id%22%3A%20371%7D',
+    slice_url: '/explore/?form_data=%7B%22slice_id%22%3A%20371%7D',
     slice_name: 'Vaccine Candidates per Country & Stage',
     slice_description: 'Table of vaccine candidates for 100 countries',
     form_data: {
@@ -90,7 +90,7 @@ const createProps = (viz_type = 'sunburst') => ({
   chartStatus: 'rendered',
   showControls: true,
   supersetCanShare: true,
-  formData: { slice_id: 1, datasource: '58__table' },
+  formData: { slice_id: 1, datasource: '58__table', viz_type: 'sunburst' },
 });
 
 test('Should render', () => {
