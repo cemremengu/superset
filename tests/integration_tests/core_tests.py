@@ -83,11 +83,17 @@ from tests.integration_tests.fixtures.world_bank_dashboard import (
 logger = logging.getLogger(__name__)
 
 
+@pytest.fixture(scope="module")
+def cleanup():
+    db.session.query(Query).delete()
+    db.session.query(DatasourceAccessRequest).delete()
+    db.session.query(models.Log).delete()
+    db.session.commit()
+    yield
+
+
 class TestCore(SupersetTestCase):
     def setUp(self):
-        db.session.query(Query).delete()
-        db.session.query(DatasourceAccessRequest).delete()
-        db.session.query(models.Log).delete()
         self.table_ids = {
             tbl.table_name: tbl.id for tbl in (db.session.query(SqlaTable).all())
         }
@@ -224,7 +230,7 @@ class TestCore(SupersetTestCase):
 
     def test_get_superset_tables_substr(self):
         example_db = superset.utils.database.get_example_database()
-        if example_db.backend in {"presto", "hive"}:
+        if example_db.backend in {"presto", "hive", "sqlite"}:
             # TODO: change table to the real table that is in examples.
             return
         self.login(username="admin")
