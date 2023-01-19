@@ -1238,6 +1238,10 @@ MACHINE_AUTH_PROVIDER_CLASS = "superset.utils.machine_auth.MachineAuthProvider"
 # sliding cron window size, should be synced with the celery beat config minus 1 second
 ALERT_REPORTS_CRON_WINDOW_SIZE = 59
 ALERT_REPORTS_WORKING_TIME_OUT_KILL = True
+
+# Custom timestamp function for labeling notifications
+ALERT_REPORTS_TIMESTAMP = lambda: ""
+
 # Which user to attempt to execute Alerts/Reports as. By default,
 # use the user defined in the `THUMBNAIL_SELENIUM_USER` config parameter.
 # To first try to execute as the creator in the owners list (if present), then fall
