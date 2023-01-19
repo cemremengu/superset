@@ -1432,7 +1432,7 @@ const AlertReportModal: FunctionComponent<AlertReportModalProps> = ({
                       {TRANSLATIONS.SEND_AS_CSV_TEXT}
                     </StyledRadio>
                     <StyledRadio value="XLSX">
-                    {TRANSLATIONS.SEND_AS_XLSX_TEXT}
+                      {TRANSLATIONS.SEND_AS_XLSX_TEXT}
                     </StyledRadio>
                     {TEXT_BASED_VISUALIZATION_TYPES.includes(chartVizType) && (
                       <StyledRadio value="TEXT">
