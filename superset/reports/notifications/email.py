@@ -167,7 +167,7 @@ class EmailNotification(BaseNotification):  # pylint: disable=too-few-public-met
         if self._content.data and self._content.data_format:
             attachment = {
                 __(
-                    "%(name)s%(timestamp)s.csv",
+                    "%(name)s%(timestamp)s.%(format)s",
                     name=self._content.name,
                     format=self._content.data_format.lower(),
                     timestamp=app.config["ALERT_REPORTS_TIMESTAMP"](),
